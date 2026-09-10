@@ -296,3 +296,45 @@ footer a:hover{ color:var(--ink); text-decoration:underline }
 }
 .doc .card p{ margin:0 }
 .doc .card p + p{ margin-top:8px }
+
+/* ── waitlist ──────────────────────────────────────────────── */
+.signup{ display:flex; gap:10px; flex-wrap:wrap; margin-top:18px }
+.signup input{
+  flex:1 1 240px; min-width:0; font:500 16.5px/1 var(--text); color:var(--ink);
+  background:var(--panel); border:1px solid var(--edge); border-radius:10px;
+  padding:16px 16px;
+}
+.signup input::placeholder{ color:var(--ink-3) }
+.signup input:focus{ outline:none; border-color:var(--slate); box-shadow:0 0 0 3px light-dark(rgba(63,95,191,.16),rgba(74,107,208,.28)) }
+.signup button{ flex:0 0 auto }
+.signup-note{ color:var(--ink-3); font-size:13.5px; margin:12px 0 0 }
+.signup-note.ok{ color:var(--turf-1); font-weight:600 }
+.signup-note.bad{ color:var(--crimson); font-weight:600 }
+.closer .signup{ max-width:520px; margin-inline:auto; justify-content:center }
+.closer .signup-note{ text-align:center }
+
+dialog.sheet{
+  border:none; padding:0; background:transparent; max-width:min(94vw,520px); width:100%;
+  color:var(--ink);
+}
+dialog.sheet::backdrop{ background:light-dark(rgba(23,26,31,.45),rgba(0,0,0,.65)); backdrop-filter:blur(3px) }
+dialog.sheet .inner{
+  background:var(--panel); border:1px solid var(--edge); border-radius:20px;
+  box-shadow:var(--shadow-lift); padding:clamp(24px,4vw,34px);
+}
+dialog.sheet h2{ font-size:clamp(26px,4vw,34px); margin:10px 0 0 }
+dialog.sheet p{ color:var(--ink-2); margin:12px 0 0; font-size:16px }
+dialog.sheet .close{
+  position:absolute; top:14px; right:16px; background:none; border:none; cursor:pointer;
+  font:700 14px/1 var(--text); color:var(--ink-3); padding:8px;
+}
+dialog.sheet .close:hover{ color:var(--ink) }
+dialog.sheet .wrapper{ position:relative }
+@media (prefers-reduced-motion:no-preference){
+  dialog.sheet[open]{ animation:pop .18s ease-out }
+  @keyframes pop{ from{ opacity:0; transform:translateY(10px) scale(.98) } to{ opacity:1; transform:none } }
+}
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0;
+}

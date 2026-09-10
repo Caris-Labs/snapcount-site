@@ -6,18 +6,98 @@
 const LIVE = false;
 const STORE_URL = "https://apps.apple.com/app/id6809611679";
 
+const waitlist = document.getElementById('waitlist');
+
 for (const btn of document.querySelectorAll('.store-btn')) {
   const label = btn.querySelector('.store-label');
   if (LIVE) {
     btn.href = STORE_URL;
   } else {
+    // no dead ends: until the app is out, the button collects an address instead
     btn.href = "#";
-    btn.setAttribute('aria-disabled', 'true');
-    label.textContent = "Coming to the App Store";
-    btn.addEventListener('click', e => e.preventDefault());
+    label.textContent = "Join the waitlist";
+    btn.querySelector('svg')?.remove();      // it is not an App Store link yet
+    btn.addEventListener('click', e => { e.preventDefault(); waitlist.showModal(); });
   }
 }
-if (!LIVE) document.getElementById('nav-cta').textContent = "Coming soon";
+const navCta = document.getElementById('nav-cta');
+if (LIVE) { navCta.href = STORE_URL; }
+else {
+  navCta.textContent = "Join the waitlist";
+  navCta.href = "#";
+  navCta.addEventListener('click', e => { e.preventDefault(); waitlist.showModal(); });
+  document.getElementById('closer-cta').hidden = false;
+}
+
+document.getElementById('waitlist-close').addEventListener('click', () => waitlist.close());
+// tapping the dim area outside the card closes it too
+waitlist.addEventListener('click', e => { if (e.target === waitlist) waitlist.close(); });
+
+/* ─────────────────────────────────────────────────────────────
+   1a. The waitlist itself.
+   Straight into the same database the app uses. The key below is the
+   publishable one — it is in the app too, and the table only accepts
+   inserts, so the list can be added to but never read back.
+   ───────────────────────────────────────────────────────────── */
+const SUPABASE_URL = "https://jhygmyivoaxmzqajqkuu.supabase.co";
+const SUPABASE_KEY = "sb_publishable_fxbApy-1QyEhskA3uGhqUQ_8HRaS9Th";
+
+function wireSignup(formId, noteId) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+  const note = document.getElementById(noteId);
+  const input = form.querySelector('input');
+  const button = form.querySelector('button');
+  const resting = note.textContent;
+
+  function said(text, kind) {
+    note.textContent = text;
+    note.className = 'signup-note' + (kind ? ' ' + kind : '');
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const email = input.value.trim();
+    if (!/^[^@\s]+@[^@\s.]+\.[^@\s]{2,}$/.test(email)) {
+      said('That does not look like an email address.', 'bad');
+      input.focus();
+      return;
+    }
+    button.disabled = true;
+    const wasLabel = button.textContent;
+    button.textContent = 'One moment…';
+    try {
+      const res = await fetch(SUPABASE_URL + '/rest/v1/waitlist', {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({ email, source: 'web' }),
+      });
+      // 409 is the unique index: they are already on the list, which is a yes
+      if (res.ok || res.status === 409) {
+        form.hidden = true;
+        said(res.status === 409
+          ? "You're already on the list. We'll email you the day it lands."
+          : "You're on the list. We'll email you the day it lands.", 'ok');
+      } else {
+        said('That did not go through. Try again, or email hello@carislabs.app.', 'bad');
+      }
+    } catch {
+      said('No connection just now. Try again in a moment.', 'bad');
+    } finally {
+      button.disabled = false;
+      button.textContent = wasLabel;
+      if (!form.hidden && note.className.includes('bad') === false) said(resting);
+    }
+  });
+}
+
+wireSignup('signup-modal', 'note-modal');
+wireSignup('signup-closer', 'note-closer');
 
 /* ─────────────────────────────────────────────────────────────
    2. The playable console.

@@ -247,16 +247,38 @@
   <div class="wrap">
     <h2 class="reveal">Season starts Saturday.</h2>
     <p class="reveal">Put your roster in tonight and you'll be ready before the coin toss.</p>
-    <div class="hero-cta reveal">
-      <a class="btn btn-primary store-btn" href="#">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.8c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7 1.4 0 1.8.7 3 .7 1.2 0 2-1.1 2.8-2.2.9-1.3 1.2-2.5 1.2-2.6 0 0-2.4-.9-2.4-3.5zM14.2 5.9c.6-.8 1-1.9.9-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.7-1.3z"/></svg>
-        <span class="store-label">Download on the App Store</span>
-      </a>
+    <div class="reveal" id="closer-cta">
+      <form class="signup" id="signup-closer" novalidate>
+        <label class="sr-only" for="email-closer">Your email address</label>
+        <input id="email-closer" name="email" type="email" inputmode="email"
+               autocomplete="email" placeholder="you@example.com" required>
+        <button class="btn btn-primary" type="submit">Tell me when it's ready</button>
+      </form>
+      <p class="signup-note" id="note-closer">One email, the day it lands on the App Store. Nothing else, ever.</p>
     </div>
   </div>
 </section>
 
 </main>
+
+<dialog class="sheet" id="waitlist">
+  <div class="inner wrapper">
+    <button class="close" id="waitlist-close" type="button" aria-label="Close">Close</button>
+    <p class="eyebrow">Not out yet</p>
+    <h2>Want to know the day it lands?</h2>
+    <p>
+      SnapCount is with Apple for review. Leave your email and we'll send you one
+      message the day it's on the App Store. No newsletter, no drip, nothing else.
+    </p>
+    <form class="signup" id="signup-modal" novalidate>
+      <label class="sr-only" for="email-modal">Your email address</label>
+      <input id="email-modal" name="email" type="email" inputmode="email"
+             autocomplete="email" placeholder="you@example.com" required>
+      <button class="btn btn-primary" type="submit">Join the waitlist</button>
+    </form>
+    <p class="signup-note" id="note-modal">We store the address and nothing else. You can ask us to delete it any time.</p>
+  </div>
+</dialog>
 
 <footer>
   <div class="wrap foot">

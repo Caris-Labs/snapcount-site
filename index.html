@@ -1,8 +1,273 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SnapCount Flag Football</title><link rel="stylesheet" href="style.css"><link rel="icon" href="icon.png"></head><body><main>
-<header><img src="icon.png" alt=""><a href="./">SnapCount</a></header>
-<h1>SnapCount Flag Football</h1>
-<p class="lead">The book for your flag football team. Every play in a couple of taps. Score, downs and the field keep themselves. Stats for every player, all season.</p>
-<div class="card"><p>SnapCount is made by Caris Labs for youth flag football coaches who keep their own stats from the sideline. Pass, rush, flag pull, interception: two taps and the scoreboard, the downs and the field are right. At the end of the season every player has a line.</p></div>
-<h2>Get it</h2><p>SnapCount is on the App Store for iPhone.</p>
-<footer><a href="privacy.html">Privacy policy</a><a href="support.html">Support</a><span>© 2026 Caris Labs</span></footer>
-</main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SnapCount — the stats book for your flag football team</title>
+<meta name="description" content="Keep every play from the sideline in a couple of taps. The scoreboard, the downs and the field keep themselves. Parents follow the game live, free.">
+<link rel="icon" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#3F5FBF">
+
+<meta property="og:title" content="SnapCount — the stats book for your flag football team">
+<meta property="og:description" content="Every play in a couple of taps. Parents follow the game live, free.">
+<meta property="og:url" content="https://snapcount.football/">
+<meta property="og:image" content="https://snapcount.football/icon.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="hero.css">
+</head>
+
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="/"><img src="icon.png" alt=""> SnapCount</a>
+    <nav>
+      <a href="#follow">Follow a game</a>
+      <a href="#price">Price</a>
+      <a class="cta" id="nav-cta" href="#get">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ── hero ─────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="wrap hero-grid">
+
+    <div>
+      <p class="eyebrow">SnapCount · Flag football</p>
+      <h1>Every play in a couple&nbsp;of&nbsp;taps.</h1>
+      <p class="lede">
+        The scoreboard, the downs and the field <b>keep themselves</b>. You tap what
+        happened and who did it. At the end of the season every kid has a stat line.
+      </p>
+      <div class="hero-cta" id="get">
+        <a class="btn btn-primary store-btn" href="#">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.8c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7 1.4 0 1.8.7 3 .7 1.2 0 2-1.1 2.8-2.2.9-1.3 1.2-2.5 1.2-2.6 0 0-2.4-.9-2.4-3.5zM14.2 5.9c.6-.8 1-1.9.9-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.7-1.3z"/></svg>
+          <span class="store-label">Download on the App Store</span>
+        </a>
+        <a class="btn btn-ghost" href="#follow">I'm here to watch a game</a>
+      </div>
+      <p class="trust">
+        <span><i class="dot"></i> Two games free</span>
+        <span><i class="dot"></i> Works with no signal</span>
+        <span><i class="dot"></i> No ads, no tracking</span>
+      </p>
+    </div>
+
+    <!-- the product, running -->
+    <div class="console" id="demo">
+      <p class="try">Go on, keep a play</p>
+
+      <div class="score">
+        <div class="side has" id="side-us">
+          <div class="nm">Falcons</div>
+          <div class="pts"><span id="us-pts">0</span>
+            <svg class="ball-ico" viewBox="0 0 100 60" aria-hidden="true"><path fill="#fff" d="M2 30C17 6 83 6 98 30 83 54 17 54 2 30Z"/><path fill="#2E4A9E" d="M36 28h28v4H36zM42 21h4v18h-4zM52 21h4v18h-4z"/></svg>
+          </div>
+        </div>
+        <div class="side" id="side-them">
+          <div class="nm">Tigers</div>
+          <div class="pts">
+            <svg class="ball-ico" viewBox="0 0 100 60" aria-hidden="true"><path fill="#fff" d="M2 30C17 6 83 6 98 30 83 54 17 54 2 30Z"/><path fill="#2E4A9E" d="M36 28h28v4H36zM42 21h4v18h-4zM52 21h4v18h-4z"/></svg>
+            <span id="them-pts">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="situation">
+        <span class="dd" id="dd">1st &amp; 15</span>
+        <span class="at" id="at">Own 15</span>
+        <button class="undo" id="undo" disabled>Undo</button>
+      </div>
+
+      <div class="field" id="field">
+        <div class="stripes"></div>
+        <div class="hash a"></div><div class="hash b"></div>
+        <div class="ez l"><span>Falcons</span></div>
+        <div class="ez r"><span>Tigers</span></div>
+        <div class="marker ltg" id="ltg"></div>
+        <div class="marker los" id="los"></div>
+        <div class="pill" id="pill">
+          <svg viewBox="0 0 100 60" aria-hidden="true"><path d="M2 30C17 6 83 6 98 30 83 54 17 54 2 30Z" fill="#8B4A22" stroke="#fff" stroke-width="5"/><path fill="#fff" d="M36 28h28v4H36zM42 21h4v18h-4zM52 21h4v18h-4zM62 21h4v18h-4z"/></svg>
+        </div>
+        <div class="flash" id="flash"></div>
+      </div>
+      <p class="hint" id="hint">Tap <b>Pass</b> or Rush to start a play.</p>
+
+      <div id="stage"></div>
+      <div class="log" id="log"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── the parent lane ──────────────────────────────────────── -->
+<div class="wrap">
+  <div class="lane reveal" id="follow">
+    <p class="eyebrow">For parents and grandparents</p>
+    <h2>Someone sent you a game code?</h2>
+    <p>
+      You're in the right place. Your coach turned on following for today's game.
+      Get the app, put the code in, and the plays arrive on your phone as they're kept.
+      It's free, there's no account, and you can be watching in under a minute.
+    </p>
+    <div class="steps">
+      <div class="step"><b>Get the app</b><span>Free on the App Store. Nothing to sign up for.</span></div>
+      <div class="step"><b>Tap “I am here to follow a game”</b><span>It's on the very first screen, under the sign-in buttons.</span></div>
+      <div class="step"><b>Type the six-character code</b><span>The one your coach texted you.</span>
+        <div class="code-demo">ABC234</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── what it does ─────────────────────────────────────────── -->
+<section>
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">What you get</p>
+      <h2>A whole season, kept from a folding chair.</h2>
+      <p>
+        Built by a coach who was tired of a clipboard and a spreadsheet that never got
+        filled in. Everything in here exists because a real game needed it.
+      </p>
+    </div>
+
+    <div class="beats">
+      <article class="beat reveal">
+        <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#3F5FBF" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/></svg></div>
+        <h3>The game keeps itself</h3>
+        <p>
+          Pass, rush, flag pull, interception, sack, penalty, punt. Tap what happened,
+          tap who did it. First downs, touchdowns, the point after, a pick six, halftime
+          and the ends switching are all handled. Undo anything. Fix a play from ten plays
+          ago and everything after it recalculates.
+        </p>
+      </article>
+
+      <article class="beat reveal">
+        <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M9 5v14"/></svg></div>
+        <h3>Your roster in a minute</h3>
+        <p>
+          Point the app at a screenshot of your league's roster and it reads the names and
+          numbers straight off it, on your phone, without uploading anything. Or paste a
+          list, or open a file. Tap a column to sort. It saves as you type.
+        </p>
+      </article>
+
+      <article class="beat reveal">
+        <div class="glyph"><svg viewBox="0 0 24 24" fill="none" stroke="#2F9A46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 3 8-8"/><path d="M16 7h4v4"/></svg></div>
+        <h3>Fall and spring, kept apart</h3>
+        <p>
+          Run more than one team and switch between them. Each team keeps its seasons
+          separate, so a spring game never lands in your fall totals. Every filed game keeps
+          its own box score, and the whole thing exports to a spreadsheet.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── live following ───────────────────────────────────────── -->
+<section class="tint">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow">The best part</p>
+      <h2>The grandparents can watch from four states away.</h2>
+      <p>
+        Turn on following and you get a six-character code to text round. Every family on
+        your team can follow the score, the down, the plays and the box score as you keep
+        them. It costs them nothing and they don't need an account.
+      </p>
+    </div>
+    <div class="stance">
+      <div class="reveal"><b>Last names stay off</b><span>Watchers see jersey numbers and first names. Full names only if you deliberately turn them on. These are children, and that is the default we chose.</span></div>
+      <div class="reveal"><b>The code belongs to one game</b><span>It dies when you file the game, and you can stop following at any moment. Nobody can browse a list of who is playing tonight.</span></div>
+      <div class="reveal"><b>A bad signal is fine</b><span>You keep recording either way. The plays catch up when the sideline gets a bar back.</span></div>
+      <div class="reveal"><b>A parent can keep the book</b><span>Hand the stats to someone in the stands while you coach. They don't pay anything either.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── price ────────────────────────────────────────────────── -->
+<section id="price">
+  <div class="wrap">
+    <div class="price-grid">
+    <div class="head reveal">
+      <p class="eyebrow">What it costs</p>
+      <h2>Two games free. Then twenty dollars a year.</h2>
+      <p>No card for the first two. Nothing you have recorded is ever held hostage.</p>
+    </div>
+    <div class="price-card reveal">
+      <p class="eyebrow">Season pass</p>
+      <div class="tag"><span class="n">$19.99</span><span class="per">a year · covers every team you run</span></div>
+      <ul>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><span>Every game, all season, for as many teams as you coach.</span></li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><span>Your families follow every game live, free, for ever.</span></li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><span>The season backed up, and a second phone able to pick it up.</span></li>
+        <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5l4 4 8-9"/></svg><span>Fall and spring kept apart, with their own totals.</span></li>
+      </ul>
+      <p class="fine">
+        The first two games are free and need no card. Whatever you have already recorded
+        stays yours either way — reading it, exporting it and backing it up are free for
+        ever, subscription or not. Cancel any time in your Apple account.
+      </p>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── privacy ──────────────────────────────────────────────── -->
+<section class="tint">
+  <div class="wrap">
+    <div class="head centred reveal">
+      <p class="eyebrow">Where we stand</p>
+      <h2>No ads. No tracking. Nobody's kid for sale.</h2>
+      <p>
+        This is a stats book, not an advertising business. There is no analytics service, no
+        ad network, and nothing about your team is sold or shared with anyone. Roster photos
+        are read on your phone and never leave it. You can delete your account, and
+        everything on our server with it, from inside the app.
+      </p>
+      <p style="margin-top:18px"><a href="privacy.html" style="color:#3F5FBF;font-weight:700">Read the privacy policy</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── closer ───────────────────────────────────────────────── -->
+<section class="closer">
+  <div class="wrap">
+    <h2 class="reveal">Season starts Saturday.</h2>
+    <p class="reveal">Put your roster in tonight and you'll be ready before the coin toss.</p>
+    <div class="hero-cta reveal">
+      <a class="btn btn-primary store-btn" href="#">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.8c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.9-3-.8-1.5 0-2.9.9-3.7 2.3-1.6 2.7-.4 6.8 1.1 9 .8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7 1.4 0 1.8.7 3 .7 1.2 0 2-1.1 2.8-2.2.9-1.3 1.2-2.5 1.2-2.6 0 0-2.4-.9-2.4-3.5zM14.2 5.9c.6-.8 1-1.9.9-3-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.8-.9 2.9 1 .1 2-.5 2.7-1.3z"/></svg>
+        <span class="store-label">Download on the App Store</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Caris Labs</span>
+    <a href="privacy.html">Privacy</a>
+    <a href="support.html">Support</a>
+    <a href="mailto:hello@carislabs.app">hello@carislabs.app</a>
+    <span class="sp">Made on a sideline in the rain.</span>
+  </div>
+</footer>
+
+<script src="hero.js"></script>
+</body>
+</html>

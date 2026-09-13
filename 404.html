@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Follow the team on SnapCount</title>
+<link rel="icon" href="/icon.png">
+<meta name="theme-color" content="#3F5FBF">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/hero.css">
+<style>
+  /* A team's follow link, snapcount.football/t/<code>. With the app on the
+     phone, iOS opens the app before this page ever loads; this is what a
+     parent without it sees. GitHub Pages serves this file for any path it
+     does not know, which is how one static file answers every team's link. */
+  .team-band{ background:var(--band, var(--slate)); color:var(--band-ink, #fff); border-radius:18px;
+    padding:28px 24px 24px; margin:28px 0 18px; box-shadow:var(--shadow) }
+  .team-band .eyebrow{ color:inherit; opacity:.8 }
+  .team-band h1{ font-size:clamp(40px, 9vw, 64px); margin:10px 0 6px; overflow-wrap:anywhere }
+  .team-band .meta{ font:600 15px/1.4 var(--text); opacity:.9 }
+  .follow-card{ background:var(--panel); border:1px solid var(--edge); border-radius:14px; padding:18px 18px 16px; margin:0 0 14px }
+  .follow-card b{ display:block; font:800 16px/1.3 var(--text); margin-bottom:4px }
+  .follow-card span{ color:var(--ink-2); font-size:15px }
+  .live-dot{ display:inline-block; width:9px; height:9px; border-radius:50%; background:#E11D48; margin-right:7px; vertical-align:1px; animation:pulse 1.4s infinite }
+  @keyframes pulse{ 50%{ opacity:.35 } }
+  @media (prefers-reduced-motion: reduce){ .live-dot{ animation:none } }
+  .actions{ display:grid; gap:10px; margin:18px 0 8px }
+  .actions a{ display:block; text-align:center; text-decoration:none; font:800 17px/1 var(--text); padding:17px 18px; border-radius:12px }
+  .actions .primary{ background:var(--slate); color:#fff }
+  .actions .ghost{ background:var(--panel-2); color:var(--ink) }
+  .fine{ color:var(--ink-3); font-size:14px; margin:10px 0 40px }
+  .fine code{ font:600 14px ui-monospace, SFMono-Regular, Menlo, monospace; color:var(--ink-2) }
+  main.wrap{ max-width:560px }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="/"><img src="/icon.png" alt=""> SnapCount</a>
+    <nav><a class="cta" href="/">Home</a></nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- a team link -->
+  <section id="team" hidden>
+    <div class="team-band" id="band">
+      <p class="eyebrow">Follow the team on SnapCount</p>
+      <h1 id="team-name">Your team</h1>
+      <p class="meta" id="team-meta"></p>
+    </div>
+    <div class="follow-card" id="now" hidden></div>
+    <div class="follow-card" id="next" hidden></div>
+    <div class="follow-card">
+      <b>Every game, live, on your phone</b>
+      <span>The score, the down and every play as the coach keeps them. Results and stats after. Free, and nothing to sign up for.</span>
+    </div>
+    <div class="actions">
+      <a class="primary" id="get" href="/">Get SnapCount</a>
+      <a class="ghost" id="open" href="#">I have the app. Open the team</a>
+    </div>
+    <p class="fine" id="fine">Once the app is on your phone, tap the coach's link again and it opens straight to the team.</p>
+  </section>
+
+  <!-- a link that no longer works, or any other lost page -->
+  <section id="lost" hidden>
+    <article class="doc">
+      <h1 id="lost-title">Page not found</h1>
+      <p class="lede" id="lost-text">Nothing lives at this address. <a href="/">Back to SnapCount</a>.</p>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Caris Labs</span>
+    <a href="/terms.html">Terms</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/support.html">Support</a>
+  </div>
+</footer>
+
+<script>
+/* Flip LIVE to true the day the app is approved, here and in hero.js. */
+const LIVE = false;
+const STORE_URL = "https://apps.apple.com/app/id6809611679";
+/* The publishable key, the same one the app and the waitlist use. The only
+   thing it can read here is what follow_team() returns for a code. */
+const SUPABASE_URL = "https://jhygmyivoaxmzqajqkuu.supabase.co";
+const SUPABASE_KEY = "sb_publishable_fxbApy-1QyEhskA3uGhqUQ_8HRaS9Th";
+
+const $ = id => document.getElementById(id);
+const match = location.pathname.match(/^\/t\/([a-z0-9-]{6,})\/?$/i);
+
+function lost(title, text) {
+  $('lost').hidden = false;
+  if (title) $('lost-title').textContent = title;
+  if (text) $('lost-text').textContent = text;
+}
+
+function prettyDate(iso, time) {
+  const [y, m, d] = (iso || '').split('-').map(Number);
+  if (!y || !m || !d) return '';
+  const dt = new Date(y, m - 1, d);
+  let s = dt.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+  if (time) {
+    const [h, mi] = time.split(':').map(Number);
+    if (!isNaN(h)) s += ' · ' + ((h % 12) || 12) + (mi ? ':' + String(mi).padStart(2, '0') : '') + (h < 12 ? 'am' : 'pm');
+  }
+  return s;
+}
+
+function card(el, title, text, live) {
+  el.hidden = false;
+  el.textContent = '';
+  const b = document.createElement('b');
+  if (live) { const dot = document.createElement('span'); dot.className = 'live-dot'; b.appendChild(dot); }
+  b.appendChild(document.createTextNode(title));
+  const s = document.createElement('span');
+  s.textContent = text;
+  el.append(b, s);
+}
+
+/* Text on a team colour: dark ink on a light colour, white on a dark one. */
+function inkOn(hex) {
+  const n = parseInt(hex, 16);
+  if (isNaN(n)) return '#fff';
+  const c = [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(v => {
+    v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  const L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  return L > 0.4 ? '#171A1F' : '#fff';
+}
+
+async function showTeam(code) {
+  $('open').href = 'snapcount://t/' + code;
+  if (LIVE) {
+    $('get').href = STORE_URL;
+  } else {
+    $('get').textContent = 'SnapCount is almost in the App Store';
+    $('get').href = '/#signup-closer';
+    $('fine').textContent = 'Leave your email on the home page and we will tell you the day it arrives. This link will work then.';
+  }
+  let team = null, answered = false;
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/rpc/follow_team', {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ link_code: code, have_season: -1 })
+    });
+    if (res.ok) { answered = true; team = await res.json(); }
+  } catch (e) { /* no signal: the page still works without the team's details */ }
+
+  if (answered && team === null) {
+    // the server answered and knows no such team: a reset or mistyped link
+    lost('This link has changed',
+         'The coach may have made a new link for the team. Ask them to send it again.');
+    return;
+  }
+  $('team').hidden = false;
+  if (!team) return;
+
+  const name = team.team_name || 'the team';
+  document.title = 'Follow the ' + name + ' on SnapCount';
+  $('team-name').textContent = name;
+  if (team.primary_hex && /^[0-9a-f]{6}$/i.test(team.primary_hex)) {
+    $('band').style.setProperty('--band', '#' + team.primary_hex);
+    $('band').style.setProperty('--band-ink', inkOn(team.primary_hex));
+  }
+
+  const season = team.season || {};
+  const games = Array.isArray(season.season) ? season.season : [];
+  let w = 0, l = 0, t = 0;
+  for (const g of games) {
+    const s = g.score || {};
+    if (s.us > s.them) w++; else if (s.us < s.them) l++; else t++;
+  }
+  const record = games.length ? (w + '–' + l + (t ? '–' + t : '')) : '';
+  $('team-meta').textContent = [season.seasonName, record].filter(Boolean).join('  ·  ');
+
+  const live = team.live && team.live.M;
+  if (live) {
+    card($('now'), 'Playing now' + (live.them ? ' vs ' + live.them : ''),
+         'Open the app to watch it live.', true);
+  }
+  const sched = Array.isArray(season.schedule) ? season.schedule.slice() : [];
+  sched.sort((a, b) => ((a.date || '') + (a.time || '')).localeCompare((b.date || '') + (b.time || '')));
+  const next = sched.find(g => !live || g.id !== live.schedId);
+  if (next) {
+    card($('next'), 'Next game: vs ' + (next.them || 'TBD'),
+         [prettyDate(next.date, next.time), next.place].filter(Boolean).join(' · '));
+  } else if (games.length) {
+    const g = games[games.length - 1], s = g.score || {};
+    card($('next'), 'Last game: vs ' + (g.opp || ''), (s.us ?? '') + '–' + (s.them ?? '') + ' · ' + prettyDate(g.date));
+  }
+}
+
+if (match) {
+  showTeam(match[1].toLowerCase());
+} else {
+  lost();
+}
+</script>
+</body>
+</html>

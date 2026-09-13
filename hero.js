@@ -3,7 +3,7 @@
    Flip LIVE to true the day the app is approved. Until then the
    button says so plainly rather than sending people to a dead page.
    ───────────────────────────────────────────────────────────── */
-const LIVE = false;
+const LIVE = false;   // flip it in 404.html too: the team-link page
 const STORE_URL = "https://apps.apple.com/app/id6809611679";
 
 const waitlist = document.getElementById('waitlist');

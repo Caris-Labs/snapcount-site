@@ -101,11 +101,12 @@ wireSignup('signup-closer', 'note-closer');
 
 /* ─────────────────────────────────────────────────────────────
    2. The playable console.
-   The same rules the app uses: a 70-yard field, chains at 15, four
-   downs. Enough to feel the loop in five seconds. Built with real
-   nodes rather than markup strings.
+   High school rules, as the app plays them: an 80-yard field, drives
+   from the 14, four downs to reach the next 20-yard line. Enough to
+   feel the loop in five seconds. Built with real nodes rather than
+   markup strings.
    ───────────────────────────────────────────────────────────── */
-const LEN = 70, CHAIN = 15;
+const LEN = 80, ZONE = 20, START = 14;
 const ROSTER = [
   { n: 15, first: 'Sophie' }, { n: 11, first: 'Chloe' },
   { n: 21, first: 'Zoe' },    { n: 7,  first: 'Lily'  },
@@ -131,7 +132,7 @@ function say(before, strong, after) {
 let S, history = [];
 
 const fresh = () => ({
-  spot: 15, down: 1, ltg: 30, us: 0, them: 0, ours: true,
+  spot: START, down: 1, ltg: ZONE, us: 0, them: 0, ours: true,
   rows: [], flow: null, draft: null,
 });
 function snapshot() {
@@ -278,7 +279,7 @@ function commit() {
 
   if (scored) {
     S.ours = !S.ours;
-    S.spot = S.ours ? 15 : LEN - 15;
+    S.spot = S.ours ? START : LEN - START;
     S.down = 1;
   } else {
     S.spot = end;
@@ -289,7 +290,9 @@ function commit() {
       S.down = 1;
     } else S.down += 1;
   }
-  if (S.down === 1) S.ltg = S.ours ? Math.min(S.spot + CHAIN, LEN) : Math.max(S.spot - CHAIN, 0);
+  // the next 20-yard line ahead of the ball, the way NFHS sets the zone to gain
+  if (S.down === 1) S.ltg = S.ours ? Math.min((Math.floor(S.spot / ZONE) + 1) * ZONE, LEN)
+                                   : Math.max((Math.ceil(S.spot / ZONE) - 1) * ZONE, 0);
 
   S.flow = null;
   S.draft = null;

@@ -35,6 +35,12 @@
   main.wrap{ max-width:560px }
   /* one girl's page: snapcount.football/t/<code>?p=<number> */
   .team-band .num{ font-family:var(--display); margin-right:.28em }
+  /* on her page the band stays, kept short: the room is for her numbers */
+  .team-band.short{ display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+    padding:14px 18px; margin:-8px 0 14px; border-radius:20px }
+  .team-band.short .eyebrow{ display:none }
+  .team-band.short h1{ font-size:30px; margin:0; line-height:1.05 }
+  .team-band.short .meta{ font-size:14px; margin:0; text-align:right; white-space:nowrap }
   .her-card{ background:var(--panel); border:1px solid var(--edge); border-radius:20px; padding:16px 18px 18px; margin:0 0 14px }
   .her-card .sub{ display:block; font:600 14px/1.4 var(--text); color:var(--ink-2); margin:6px 0 10px }
   .her-card .line{ font:700 19px/1.35 var(--text); margin:0 0 6px }
@@ -188,7 +194,7 @@ function showHer(team, n) {
   const name = typeof me.name === 'string' && me.name ? me.name : 'Player ' + n;
   const teamName = team.team_name || 'the team';
   document.title = name + ' · ' + teamName + ' on SnapCount';
-  $('band').querySelector('.eyebrow').textContent = teamName;
+  $('band').classList.add('short');
   const h = $('team-name'); h.textContent = '';
   h.append(el('span', 'num', '#' + n), document.createTextNode(name.toUpperCase()));
 
@@ -320,7 +326,7 @@ async function showTeam(code) {
   const live = team.live && team.live.M;
   if (isHer) {
     // her page: the team's game card is replaced by her own; keep the next game
-    $('team-meta').textContent = record ? record + ' this season' : '';
+    $('team-meta').textContent = name + (record ? ' · ' + record : '');
     $('open').textContent = 'I have the app. Open her page';
     $('fine').textContent = LIVE
       ? 'Her page works right here. With the app, the same link opens it there and you can watch every play live.'

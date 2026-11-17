@@ -34,7 +34,13 @@
   .fine code{ font:600 14px ui-monospace, SFMono-Regular, Menlo, monospace; color:var(--ink-2) }
   main.wrap{ max-width:560px }
   /* one girl's page: snapcount.football/t/<code>?p=<number> */
-  .team-band .num{ font-family:var(--display); margin-right:.28em }
+  /* her page: a slim header, not the team's big band */
+  .her-head{ display:flex; align-items:center; gap:14px; margin:22px 0 16px }
+  .her-head .jersey{ flex:none; width:54px; height:54px; border-radius:50%; display:grid; place-items:center;
+    background:var(--band, var(--slate)); color:var(--band-ink, #fff); font:400 24px/1 var(--display);
+    font-variant-numeric:tabular-nums }
+  .her-head h1{ font-size:32px; line-height:1; overflow-wrap:anywhere }
+  .her-head p{ margin:5px 0 0; font:600 14px/1.3 var(--text); color:var(--ink-2) }
   .her-card{ background:var(--panel); border:1px solid var(--edge); border-radius:20px; padding:16px 18px 18px; margin:0 0 14px }
   .her-card .sub{ display:block; font:600 14px/1.4 var(--text); color:var(--ink-2); margin:6px 0 10px }
   .her-card .line{ font:700 19px/1.35 var(--text); margin:0 0 6px }
@@ -74,6 +80,10 @@
     </div>
     <div class="follow-card" id="now" hidden></div>
     <div id="her" hidden>
+      <div class="her-head">
+        <span class="jersey" id="her-num"></span>
+        <div><h1 id="her-name"></h1><p id="her-meta"></p></div>
+      </div>
       <div class="her-card" id="her-today" hidden></div>
       <div class="her-card" id="her-season"></div>
       <div id="her-games"></div>
@@ -188,9 +198,9 @@ function showHer(team, n) {
   const name = typeof me.name === 'string' && me.name ? me.name : 'Player ' + n;
   const teamName = team.team_name || 'the team';
   document.title = name + ' · ' + teamName + ' on SnapCount';
-  $('band').querySelector('.eyebrow').textContent = teamName;
-  const h = $('team-name'); h.textContent = '';
-  h.append(el('span', 'num', '#' + n), document.createTextNode(name.toUpperCase()));
+  $('band').hidden = true;
+  $('her-num').textContent = n;
+  $('her-name').textContent = name;
 
   // today, when a game is on
   const live = team.live || null;
@@ -303,8 +313,8 @@ async function showTeam(code) {
   $('team-name').textContent = name;
   const isHer = PLAYER !== null && showHer(team, PLAYER);
   if (team.primary_hex && /^[0-9a-f]{6}$/i.test(team.primary_hex)) {
-    $('band').style.setProperty('--band', '#' + team.primary_hex);
-    $('band').style.setProperty('--band-ink', inkOn(team.primary_hex));
+    $('team').style.setProperty('--band', '#' + team.primary_hex);
+    $('team').style.setProperty('--band-ink', inkOn(team.primary_hex));
   }
 
   const season = team.season || {};
@@ -320,7 +330,7 @@ async function showTeam(code) {
   const live = team.live && team.live.M;
   if (isHer) {
     // her page: the team's game card is replaced by her own; keep the next game
-    $('team-meta').textContent = record ? record + ' this season' : '';
+    $('her-meta').textContent = name + (record ? ' · ' + record : '');
     $('open').textContent = 'I have the app. Open her page';
     $('fine').textContent = LIVE
       ? 'Her page works right here. With the app, the same link opens it there and you can watch every play live.'
